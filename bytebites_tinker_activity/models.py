@@ -13,7 +13,7 @@ See `docs/revised_bytebites_spec.md` and `docs/menu_items_uml.md` for full detai
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 
@@ -84,7 +84,7 @@ class Transaction:
 	id: str = field(default_factory=lambda: str(uuid.uuid4()))
 	items: List[MenuItem] = field(default_factory=list)
 	total: float = 0.0
-	timestamp: datetime = field(default_factory=datetime.utcnow)
+	timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 	def compute_total(self) -> float:
 		self.total = sum(i.get_price() for i in self.items)
